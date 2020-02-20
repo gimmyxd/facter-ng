@@ -9,6 +9,8 @@ require "#{ROOT_DIR}/lib/framework/core/options/options_validator"
 
 module Facter
   @options = Options.instance
+  Log.add_legacy_logger(STDOUT)
+  @logger = Log.new(self)
 
   def self.[](name)
     fact(name)
@@ -34,7 +36,6 @@ module Facter
   def self.debug(msg)
     return unless debugging?
 
-    @logger ||= Log.new(self)
     @logger.debug(msg)
     nil
   end
@@ -58,14 +59,12 @@ module Facter
   end
 
   def self.log_errors(missing_names)
-    @logger ||= Log.new(self)
     missing_names.each do |missing_name|
       @logger.error("fact \"#{missing_name}\" does not exist.", true)
     end
   end
 
   def self.method_missing(name, *args, &block)
-    @logger ||= Log.new(self)
     @logger.error(
       "--#{name}-- not implemented but required \n" \
       'with params: ' \
@@ -102,7 +101,6 @@ module Facter
     @options.priority_options = { to_hash: true }
     @options.refresh
 
-    @logger ||= Log.new(self)
     block_list = BlockList.instance.block_list
     @logger.debug("blocking collection of #{block_list.join("\s")} facts") if !block_list.empty? && Options[:block]
 
@@ -115,7 +113,6 @@ module Facter
     @options.priority_options = { is_cli: true }.merge!(cli_options.map { |(k, v)| [k.to_sym, v] }.to_h)
     @options.refresh(args)
 
-    @logger = Log.new(self)
     block_list = BlockList.instance.block_list
     @logger.debug("blocking collection of #{block_list.join("\s")} facts") if !block_list.empty? && Options[:block]
 
