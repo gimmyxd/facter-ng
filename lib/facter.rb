@@ -45,7 +45,7 @@ module Facter
   end
 
   def self.debugging(debug_bool)
-    @options.priority_options = { debug: debug_bool }
+    @options.priority_options[:debug] = debug_bool
     @options.refresh
 
     debug_bool
@@ -98,11 +98,10 @@ module Facter
   end
 
   def self.to_hash
-    @options.priority_options = { to_hash: true }
+    @options.priority_options[:to_hash] = true
     @options.refresh
 
-    block_list = BlockList.instance.block_list
-    @logger.debug("blocking collection of #{block_list.join("\s")} facts") if !block_list.empty? && Options[:block]
+    log_blocked_facts
 
     resolved_facts = Facter::FactManager.instance.resolve_facts
     CacheManager.invalidate_all_caches
@@ -113,8 +112,7 @@ module Facter
     @options.priority_options = { is_cli: true }.merge!(cli_options.map { |(k, v)| [k.to_sym, v] }.to_h)
     @options.refresh(args)
 
-    block_list = BlockList.instance.block_list
-    @logger.debug("blocking collection of #{block_list.join("\s")} facts") if !block_list.empty? && Options[:block]
+    log_blocked_facts
 
     resolved_facts = Facter::FactManager.instance.resolve_facts(@options, args)
     CacheManager.invalidate_all_caches
@@ -148,6 +146,10 @@ module Facter
     ::File.read(version_file).strip
   end
 
+  private_class_method def self.log_blocked_facts
+    block_list = BlockList.instance.block_list
+    @logger.debug("blocking collection of #{block_list.join("\s")} facts") if !block_list.empty? && Options[:block]
+  end
   private_class_method def self.error_check(args, resolved_facts)
     if Options.instance[:strict]
       missing_names = args - resolved_facts.map(&:user_query).uniq

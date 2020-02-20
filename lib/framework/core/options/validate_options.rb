@@ -4,9 +4,11 @@ module Facter
   module ValidateOptions
     def validate_configs
       conflicting_configs.each do |op|
-        if op.values[0] && op.values[1]
-          raise_error("#{op.keys[0]} and #{op.keys[1]} options conflict: please specify only one")
-        end
+        next unless op.values[0] && op.values[1]
+
+        message = "#{op.keys[0]} and #{op.keys[1]} options conflict: please specify only one"
+        OptionsValidator.write_error_and_exit(message) if @options[:is_cli]
+        raise_error(message)
       end
       validate_log_options
     end
