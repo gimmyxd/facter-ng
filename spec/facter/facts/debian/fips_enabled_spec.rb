@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-describe Facter::El::FipsEnabled do
+describe Facter::Debian::FipsEnabled do
   describe '#call_the_resolver' do
-    subject(:fact) { Facter::El::FipsEnabled.new }
+    subject(:fact) { Facter::Debian::FipsEnabled.new }
 
     let(:value) { true }
 
@@ -12,8 +12,8 @@ describe Facter::El::FipsEnabled do
     end
 
     it 'calls Facter::Resolvers::Linux::FipsEnabled' do
-      fact.call_the_resolver
       expect(Facter::Resolvers::Linux::FipsEnabled).to have_received(:resolve).with(:fips_enabled)
+      fact.call_the_resolver
     end
 
     it 'returns a resolved fact' do
