@@ -16,6 +16,7 @@ describe Facter do
   describe '#to_hash' do
     it 'returns one resolved fact' do
       allow_any_instance_of(Facter::FactManager).to receive(:resolve_facts).and_return([os_fact])
+      allow_any_instance_of(Facter::FactManager).to receive(:resolve_facts).and_return([os_fact])
       allow_any_instance_of(Facter::FactCollection)
         .to receive(:build_fact_collection!)
         .with([os_fact])
@@ -23,6 +24,13 @@ describe Facter do
 
       resolved_facts_hash = Facter.to_hash
       expect(resolved_facts_hash).to eq(fact_collection)
+      context 'description' do
+        context 'description' do
+          it 'does something' do
+            expect(1).to eq(1)
+          end
+        end
+      end
     end
 
     it 'return no resolved facts' do
