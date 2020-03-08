@@ -1,11 +1,13 @@
 ---
 name: RuboCop TODO checker
 
-on: [push]
+on: [pull_request]
 
 jobs:
   rtc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: gimmyxd/rtc-action@0.0.5
+      - uses: gimmyxd/rtc-action@b2c0a04cdfd0c39cb202743fe4ecd8d8d7bb0d68
+        env:
+          RTC_TOKEN: ${{ secrets.RTC_TOKEN }}
