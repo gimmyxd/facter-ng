@@ -5,7 +5,7 @@ module Facter
     module Macosx
       class Processors < BaseResolver
         @log = Facter::Log.new(self)
-        @semaphore = Mutex.new
+
         @fact_list = {}
         ITEMS = { logical_count: 'hw.logicalcpu_max',
                   physical_count: 'hw.physicalcpu_max',

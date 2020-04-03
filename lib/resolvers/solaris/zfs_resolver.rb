@@ -5,7 +5,7 @@ module Facter
     module Solaris
       class ZFS < BaseResolver
         @log = Facter::Log.new(self)
-        @semaphore = Mutex.new
+
         @fact_list ||= {}
         class << self
           private

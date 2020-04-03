@@ -5,7 +5,7 @@ module Facter
     module Macosx
       class Mountpoints < BaseResolver
         include Facter::FilesystemHelper
-        @semaphore = Mutex.new
+
         @fact_list ||= {}
         @log = Facter::Log.new(self)
         class << self

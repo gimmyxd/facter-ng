@@ -28,7 +28,6 @@ module Facter
       # time_since_boot
       # smc_version_system
 
-      @semaphore = Mutex.new
       @fact_list = {}
 
       class << self
@@ -43,6 +42,7 @@ module Facter
 
           log.debug 'Executing command: system_profiler SPSoftwareDataType SPHardwareDataType'
           output, _status = Open3.capture2('system_profiler SPHardwareDataType SPSoftwareDataType')
+          puts 'calling capture 2'
           @fact_list = output.scan(/.*:[ ].*$/).map { |e| e.strip.match(/(.*?): (.*)/).captures }.to_h
           normalize_factlist
 

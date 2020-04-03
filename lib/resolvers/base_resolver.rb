@@ -16,10 +16,8 @@ module Facter
       end
 
       def self.resolve(fact_name)
-        @semaphore.synchronize do
-          subscribe_to_manager
-          post_resolve(fact_name)
-        end
+        subscribe_to_manager
+        post_resolve(fact_name)
       rescue LoadError => e
         log.debug("resolving fact #{fact_name}, but #{e}")
         @fact_list[fact_name] = nil

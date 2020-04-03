@@ -9,7 +9,6 @@ module Facter
       # :release
       # :codename
 
-      @semaphore = Mutex.new
       @log = Facter::Log.new(self)
       @fact_list ||= {}
 
