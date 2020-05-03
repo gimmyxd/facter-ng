@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: gimmyxd/rtc-action@aaf4479825c76967c8124c915e0010ccd8a5c995
+      - uses: gimmyxd/rtc-action@6f026636c25dfde5f8f32942d5969581a3951072
         env:
           RTC_TOKEN: ${{ secrets.RTC_TOKEN }}
           UPDATE_PR: true
